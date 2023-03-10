@@ -30,10 +30,7 @@ const postUsuarios = async (req, res) => {
   // Guardar en la DB
   await usuario.save();
 
-  res.json({
-    msg: 'post API - controlador',
-    usuario,
-  });
+  res.json(usuario);
 };
 
 const putUsuarios = async (req, res) => {
@@ -46,7 +43,7 @@ const putUsuarios = async (req, res) => {
     resto.password = bcryptjs.hashSync(password, salt);
   }
 
-  const usuario = await Usuario.findOneAndUpdate(id, resto, { new: true });
+  const usuario = await Usuario.findByIdAndUpdate(id, resto, { new: true });
 
   res.json(usuario);
 };
@@ -60,14 +57,9 @@ const patchUsuarios = (req, res) => {
 const deleteUsuarios = async (req, res) => {
   const { id } = req.params;
 
-  //Fisicamente lo borramos (NO RECOMENDABLE)
-  // const usuario = await Usuario.findByIdAndDelete(id);
+  const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
 
-  const usuario = await Usuario.findOneAndUpdate(id, { estado: false });
-
-  res.json({
-    usuario,
-  });
+  res.json(usuario);
 };
 
 module.exports = {
